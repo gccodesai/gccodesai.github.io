@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gaurav | AI Projects</title>
+<meta name="description" content="Gaurav: program and transformation leader learning AI hands-on by building LLM app prototypes. Agents, RAG, guardrails and evals.">
+<!-- These tags control the preview card when you share the link on LinkedIn -->
+<meta property="og:title" content="Gaurav | AI Projects">
+<meta property="og:description" content="Program and transformation leader learning AI hands-on by building LLM app prototypes.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: a personal "portfolio register" — the PMO status report, reimagined as a showcase.
+   Big left-aligned name, a live summary ledger, then one row per project with ID, status and evidence. */
+:root {
+  --paper: #f3f4f0;
+  --surface: #ffffff;
+  --ink: #12151a;
+  --muted: #5b616b;
+  --rule: #d9dcd4;
+  --accent: #2346d8;
+  --live: #1a7f4b;
+  --live-bg: #e2f3e9;
+  --wip: #8a5a00;
+  --wip-bg: #f8edd3;
+  --font-display: "Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f1216; --surface: #161a20; --ink: #eceee8; --muted: #9aa1ab;
+    --rule: #2a3039; --accent: #7d96ff; --live: #5fd393; --live-bg: #13301f;
+    --wip: #f0c165; --wip-bg: #33280f; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0f1216; --surface: #161a20; --ink: #eceee8; --muted: #9aa1ab;
+  --rule: #2a3039; --accent: #7d96ff; --live: #5fd393; --live-bg: #13301f;
+  --wip: #f0c165; --wip-bg: #33280f; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font-family: var(--font-body); font-size: 17px; line-height: 1.6;
+}
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 40px); }
+
+/* Top bar */
+.top { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 22px 0; border-bottom: 1px solid var(--rule); }
+.mark { font-family: var(--font-mono); font-size: 13px; letter-spacing: .04em; color: var(--muted); }
+.mark b { color: var(--ink); font-weight: 500; }
+.top nav { display: flex; gap: 22px; flex-wrap: wrap; }
+.top nav a { color: var(--ink); text-decoration: none; font-size: 15px; }
+.top nav a:hover { color: var(--accent); }
+
+/* Hero */
+.hero { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 64px); align-items: end; padding: clamp(48px, 8vw, 96px) 0 clamp(40px, 6vw, 72px); }
+.eyebrow { font-family: var(--font-mono); font-size: 13px; color: var(--muted); margin: 0 0 18px; display: flex; align-items: center; gap: 10px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--live); box-shadow: 0 0 0 4px var(--live-bg); }
+h1 {
+  font-family: var(--font-display); font-weight: 800; font-size: clamp(64px, 13vw, 168px);
+  line-height: .86; letter-spacing: -.045em; margin: 0; font-variation-settings: "opsz" 96;
+}
+h1 .line { display: block; }
+h1 .line + .line { color: var(--accent); }
+.lede { font-size: clamp(19px, 2.1vw, 23px); line-height: 1.45; max-width: 34ch; margin: 28px 0 0; text-wrap: balance; }
+.lede em { font-style: normal; background: linear-gradient(transparent 62%, color-mix(in srgb, var(--accent) 22%, transparent) 62%); }
+.cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; border-radius: 999px; font-weight: 500; font-size: 15px; text-decoration: none; border: 1px solid var(--ink); color: var(--ink); transition: background .15s, color .15s; }
+.btn.primary { background: var(--ink); color: var(--paper); }
+.btn:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* Ledger summary */
+.ledger { background: var(--surface); border: 1px solid var(--rule); border-radius: 14px; padding: 6px 22px; font-family: var(--font-mono); font-size: 14px; }
+.ledger h2 { font-family: var(--font-mono); font-weight: 500; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 14px 0 6px; }
+.ledger dl { margin: 0; }
+.ledger .row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 11px 0; border-top: 1px dashed var(--rule); }
+.ledger dt { color: var(--muted); }
+.ledger dd { margin: 0; font-variant-numeric: tabular-nums; font-weight: 500; font-size: 15px; }
+
+/* Section headings */
+section { padding: clamp(48px, 7vw, 88px) 0; border-top: 1px solid var(--rule); }
+.sec-head { display: flex; justify-content: space-between; align-items: baseline; gap: 20px; flex-wrap: wrap; margin-bottom: 32px; }
+.sec-head h2 { font-family: var(--font-display); font-weight: 600; font-size: clamp(32px, 4.4vw, 52px); letter-spacing: -.03em; line-height: 1; margin: 0; text-wrap: balance; }
+.sec-head p { color: var(--muted); margin: 0; max-width: 46ch; }
+
+/* Project register */
+.register { display: grid; gap: 20px; }
+.project { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 0 24px; background: var(--surface); border: 1px solid var(--rule); border-radius: 16px; padding: clamp(22px, 3vw, 34px); transition: border-color .2s, transform .2s; }
+.project:hover { border-color: color-mix(in srgb, var(--accent) 55%, var(--rule)); transform: translateY(-2px); }
+.pid { font-family: var(--font-display); font-weight: 800; font-size: 44px; line-height: 1; color: var(--accent); letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+.p-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+.project h3 { font-family: var(--font-display); font-weight: 600; font-size: clamp(24px, 2.8vw, 32px); letter-spacing: -.02em; line-height: 1.1; margin: 0; text-wrap: balance; }
+.kind { font-family: var(--font-mono); font-size: 13px; color: var(--muted); margin: 6px 0 0; }
+.status { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; padding: 5px 10px; border-radius: 999px; white-space: nowrap; }
+.status.live { color: var(--live); background: var(--live-bg); }
+.status.wip { color: var(--wip); background: var(--wip-bg); }
+.summary { margin: 16px 0 0; max-width: 68ch; }
+.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; margin: 22px 0 0; }
+.metric { background: var(--surface); padding: 12px 14px; }
+.metric b { display: block; font-family: var(--font-display); font-weight: 600; font-size: 26px; letter-spacing: -.02em; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.metric span { font-size: 13px; color: var(--muted); line-height: 1.35; display: block; margin-top: 4px; }
+.points { margin: 20px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; max-width: 72ch; }
+.points li { padding-left: 20px; position: relative; }
+.points li::before { content: ""; position: absolute; left: 0; top: .72em; width: 10px; height: 2px; background: var(--accent); }
+.p-foot { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--rule); }
+.stack { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-family: var(--font-mono); font-size: 12px; padding: 4px 9px; border: 1px solid var(--rule); border-radius: 6px; color: var(--muted); }
+.links { display: flex; gap: 10px; flex-wrap: wrap; }
+.links .btn { padding: 9px 15px; font-size: 14px; }
+
+/* Principles */
+.principles { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0; border-top: 2px solid var(--ink); }
+.principle { padding: 22px 22px 22px 0; border-bottom: 1px solid var(--rule); }
+.principle h3 { font-family: var(--font-display); font-weight: 600; font-size: 21px; letter-spacing: -.01em; margin: 0 0 8px; line-height: 1.2; }
+.principle p { margin: 0; color: var(--muted); font-size: 16px; }
+
+/* Next up */
+.next { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin: 0; padding: 0; list-style: none; }
+.next li { display: flex; gap: 12px; align-items: flex-start; padding: 16px 18px; border: 1px dashed var(--rule); border-radius: 12px; }
+.next .tag { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); white-space: nowrap; padding-top: 3px; }
+
+.tbd { margin: 0; padding: 22px 24px; border: 1px dashed var(--rule); border-radius: 12px; font-family: var(--font-mono); font-size: 15px; color: var(--muted); }
+
+/* Contact */
+.contact { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 32px; align-items: end; }
+.contact h2 { font-family: var(--font-display); font-weight: 800; font-size: clamp(40px, 7vw, 88px); letter-spacing: -.045em; line-height: .92; margin: 0; text-wrap: balance; }
+.contact-links { display: grid; gap: 0; font-size: 18px; }
+.contact-links a { display: flex; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--rule); color: var(--ink); text-decoration: none; }
+.contact-links a:hover { color: var(--accent); }
+.contact-links .arrow { font-family: var(--font-mono); color: var(--muted); }
+footer { padding: 28px 0 40px; border-top: 1px solid var(--rule); font-family: var(--font-mono); font-size: 13px; color: var(--muted); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+/* One orchestrated moment: the name rises in on load */
+@keyframes rise { from { transform: translateY(18px); opacity: .001; } to { transform: none; opacity: 1; } }
+h1 .line { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; }
+h1 .line + .line { animation-delay: .12s; }
+.lede, .cta, .ledger { animation: rise .7s .25s cubic-bezier(.2,.7,.2,1) both; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+@media (max-width: 820px) {
+  .hero, .contact { grid-template-columns: 1fr; }
+  .project { grid-template-columns: 1fr; }
+  .pid { font-size: 34px; margin-bottom: 10px; }
+  .top nav { gap: 16px; }
+}
+@media (max-width: 420px) {
+  .top nav a:not(.keep) { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="wrap top">
+  <div class="mark"><b>gaurav</b> / ai-projects</div>
+  <nav aria-label="Sections">
+    <a href="#work" class="keep">Prototypes</a>
+    <a href="#approach">How I learn</a>
+    <a href="#contact" class="keep">Contact</a>
+  </nav>
+</header>
+
+<main>
+  <div class="wrap hero">
+    <div>
+      <p class="eyebrow"><span class="dot" aria-hidden="true"></span>Open to Transformation, Program, Product Management and AI roles</p>
+      <!-- EDIT: add your last name on the first line if you like -->
+      <h1><span class="line">Gaurav.</span><span class="line">Learning AI.</span></h1>
+      <p class="lede">I lead programs and transformation work. To understand AI from the inside, I’m <em>building app prototypes with LLMs</em>: agents, retrieval, guardrails and evals.</p>
+      <div class="cta">
+        <a class="btn primary" href="#work">See the prototypes</a>
+        <a class="btn" href="https://github.com/gccodesai">GitHub ↗</a>
+      </div>
+    </div>
+    <aside class="ledger" aria-label="Portfolio summary">
+      <h2>Portfolio register</h2>
+      <dl id="ledger"></dl>
+    </aside>
+  </div>
+
+  <section id="work">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Prototypes</h2>
+        <p>Learning projects, each open source and hosted for $0. Try the live demos in your browser with no sign-up.</p>
+      </div>
+      <div class="register" id="register"></div>
+    </div>
+  </section>
+
+  <section id="approach">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>How I learn</h2>
+        <p>Habits from running programs, applied to learning a new technology.</p>
+      </div>
+      <div class="principles">
+        <div class="principle"><h3>Understand before abstracting</h3><p>Each prototype starts without a framework, so I can see every step of how an agent or a RAG pipeline actually works.</p></div>
+        <div class="principle"><h3>Diagnose, then fix</h3><p>Guessed fixes waste cycles. I build a check that isolates the cause, then change one thing.</p></div>
+        <div class="principle"><h3>Measure what you claim</h3><p>Test sets and metrics show whether a change actually helped, so quality is measured instead of assumed.</p></div>
+        <div class="principle"><h3>Plan for failure</h3><p>Free AI services change without notice, so every prototype has time limits, retries and a backup model.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="next">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Up next</h2>
+        <p>The next prototype.</p>
+      </div>
+      <p class="tbd">TBD</p>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap contact">
+      <h2>Let’s talk.</h2>
+      <div class="contact-links">
+        <!-- EDIT: replace YOUR-LINKEDIN with your LinkedIn profile handle -->
+        <a href="https://www.linkedin.com/in/YOUR-LINKEDIN/">LinkedIn <span class="arrow">↗</span></a>
+        <a href="https://github.com/gccodesai">GitHub · gccodesai <span class="arrow">↗</span></a>
+        <!-- EDIT: replace you@example.com with the email you want public, or delete this line -->
+        <a href="mailto:you@example.com">you@example.com <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <span>© <span id="year">2026</span> Gaurav</span>
+  <span>Hosted free on GitHub Pages.</span>
+</footer>
+
+<script>
+/* ============================================================
+   YOUR PROJECTS: to add a new one, copy a block below, paste it
+   at the top of the list, and change the text. That's it.
+   status: "live" (has a working demo) or "wip" (code only for now)
+   ============================================================ */
+const PROJECTS = [
+  {
+    title: "AI Governance Assistant",
+    kind: "RAG · Guardrails · Evals · Observability",
+    status: "wip",
+    statusLabel: "Demo coming soon",
+    shipped: "Nov 2026",
+    summary: "A chatbot that answers AI risk-management questions from the NIST AI Risk Management Framework, its Generative AI Profile and the Playbook. Every answer cites its sources, unsafe requests are stopped before they reach the model, and accuracy is measured automatically on every push.",
+    metrics: [
+      ["89%", "Hit@5 retrieval, hybrid search"],
+      ["0.73", "MRR, up from 0.58"],
+      ["100%", "prompt injections blocked"],
+      ["49", "hand-checked eval cases"]
+    ],
+    points: [
+      "Hybrid retrieval over 626 chunks: BM25 keywords plus embeddings, fused with Reciprocal Rank Fusion.",
+      "Eight deterministic input and output guardrails: injection, PII redaction, off-topic gate, citation checks.",
+      "Every request traced step by step, viewable in the app and exported to Langfuse."
+    ],
+    stack: ["Python", "Gemini / Groq", "BM25 + bge-small", "Langfuse", "GitHub Actions", "Streamlit"],
+    demo: "",   /* EDIT: paste your Streamlit link here when it's live, and set status to "live" */
+    code: "https://github.com/gccodesai/ai-governance-rag"
+  },
+  {
+    title: "Job Posting Research Agent",
+    kind: "Tool-calling agent",
+    status: "live",
+    statusLabel: "Live",
+    shipped: "Nov 2026",
+    summary: "Give it a job posting and a resume. The agent decides on its own what to research: it reads the posting, searches the web for company news and strategy, maps each requirement to resume evidence, and writes an interview-prep report with sources.",
+    metrics: [
+      ["~60", "lines for the agent loop, no framework"],
+      ["2", "LLM providers, switched by config"],
+      ["1–10", "fit score with justification"],
+      ["$0", "to run"]
+    ],
+    points: [
+      "Hand-written tool-calling loop with web search and page fetching, plus a step limit to prevent runaway runs.",
+      "Provider-agnostic HTTP client with hard deadlines, retries and automatic model fallback.",
+      "Unit tests use a fake LLM, so they're fast, free and run offline."
+    ],
+    stack: ["Python", "Gemini / Groq", "Streamlit", "DuckDuckGo Search", "BeautifulSoup", "pytest"],
+    demo: "https://job-research-agent-8esy922xxei268vy5ga4wn.streamlit.app/",
+    code: "https://github.com/gccodesai/job-research-agent"
+  }
+];
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+document.getElementById("register").innerHTML = PROJECTS.map((p, i) => {
+  const id = String(PROJECTS.length - i).padStart(2, "0");
+  return `
+  <article class="project">
+    <div class="pid" aria-hidden="true">${id}</div>
+    <div>
+      <div class="p-top">
+        <div>
+          <h3>${esc(p.title)}</h3>
+          <p class="kind">${esc(p.kind)} · ${esc(p.shipped)}</p>
+        </div>
+        <span class="status ${p.status === "live" ? "live" : "wip"}">${esc(p.statusLabel)}</span>
+      </div>
+      <p class="summary">${esc(p.summary)}</p>
+      <div class="metrics">${p.metrics.map(([v, l]) => `<div class="metric"><b>${esc(v)}</b><span>${esc(l)}</span></div>`).join("")}</div>
+      <ul class="points">${p.points.map(t => `<li>${esc(t)}</li>`).join("")}</ul>
+      <div class="p-foot">
+        <div class="stack">${p.stack.map(s => `<span class="chip">${esc(s)}</span>`).join("")}</div>
+        <div class="links">
+          ${p.demo ? `<a class="btn primary" href="${esc(p.demo)}">Try the live demo ↗</a>` : ""}
+          <a class="btn" href="${esc(p.code)}">View code ↗</a>
+        </div>
+      </div>
+    </div>
+  </article>`;
+}).join("");
+
+const live = PROJECTS.filter(p => p.status === "live").length;
+const rows = [
+  ["Prototypes", PROJECTS.length],
+  ["Live demos", live],
+  ["Latest", PROJECTS[0].shipped],
+  ["Hosting cost", "$0.00"]
+];
+document.getElementById("ledger").innerHTML = rows.map(([k, v]) => `<div class="row"><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("");
+document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
