@@ -250,8 +250,8 @@ const PROJECTS = [
   {
     title: "AI Governance Assistant",
     kind: "RAG · Guardrails · Evals · Observability",
-    status: "wip",
-    statusLabel: "Demo coming soon",
+    status: "live",
+    statusLabel: "Live",
     shipped: "Nov 2026",
     summary: "A chatbot that answers AI risk-management questions from the NIST AI Risk Management Framework, its Generative AI Profile and the Playbook. Every answer cites its sources, unsafe requests are stopped before they reach the model, and accuracy is measured automatically on every push.",
     metrics: [
@@ -261,12 +261,13 @@ const PROJECTS = [
       ["49", "hand-checked eval cases"]
     ],
     points: [
-      "Hybrid retrieval over 626 chunks: BM25 keywords plus embeddings, fused with Reciprocal Rank Fusion.",
+      "Hybrid retrieval over 679 section-labelled chunks: BM25 keywords plus embeddings, fused with Reciprocal Rank Fusion. Adding section headers to chunks lifted Hit@5 from 71% to 89%.",
       "Eight deterministic input and output guardrails: injection, PII redaction, off-topic gate, citation checks.",
-      "Every request traced step by step, viewable in the app and exported to Langfuse."
+      "Every request traced step by step and exported to Langfuse. Visitors see only their own traces, and personal details are redacted before anything is logged.",
+      "Built for flaky free tiers: falls back across three Gemini models, then to Groq, when a daily quota runs out."
     ],
     stack: ["Python", "Gemini / Groq", "BM25 + bge-small", "Langfuse", "GitHub Actions", "Streamlit"],
-    demo: "",   /* EDIT: paste your Streamlit link here when it's live, and set status to "live" */
+    demo: "https://ai-governance-rag-gpfampw6k8z72xbgx6wby3.streamlit.app/",
     code: "https://github.com/gccodesai/ai-governance-rag"
   },
   {
